@@ -1,11 +1,40 @@
 // Tensor struct and core logic
 pub struct Tensor {
-    data: Vec<f32>,
-    shape: Vec<i32>,
-    strides: [i32; 5],
+    pub data: Vec<f32>,
+    pub shape: Vec<usize>,
+    pub strides: Vec<usize>,
 }
 
-enum strides {
-    2,
-    1,
+impl Tensor {
+    pub fn new(data: Vec<f32>, shape: Vec<usize>) -> Self {
+        let strides = compute_strides(&shape);
+        Tensor {
+            data,
+            shape,
+            strides,
+        }
+    }
+}
+
+// Helper function: calculate the strides for Row-Major order
+fn compute_strides(shape: &[usize]) -> Vec<usize> {
+    let mut strides = vec![0; shape.len()];
+    let mut current_stride = 1;
+
+    // Work backwards from the last dimension to the first
+    println!("\n---- ---- ---- ----");
+    println!("// shape.len(): {:?}\n", shape.len());
+    for i in (0..shape.len()).rev() {
+        println!("* i: {:?}", i);
+        strides[i] = current_stride;
+        println!("-> strides[{i}]: {:?}", strides[i]);
+        current_stride *= shape[i];
+        println!("<-> current_stride: {:?}", current_stride);
+    }
+    println!("---- ---- ---- ----\n");
+    strides
+}
+
+pub fn flatten_matrix<T, const N: usize>(matrix: &[[T; N]]) -> &[T] {
+    matrix.as_flattened()
 }
