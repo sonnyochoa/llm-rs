@@ -2,6 +2,14 @@
 
 A tinygrad-inspired journey to understanding GPU programming and building a production LLM framework.
 
+## Learning Philosophy
+
+- Learn by implementing **Advent of Code** problems on GPU
+- Each topic: concept, relevant AoC problem(s), research pointers — then implement yourself
+- Use "Programming Massively Parallel Processors" for theory, tinygrad/llama2.c for architecture patterns
+- Ultimate goal: understanding GPU parallel programming for AI inference
+- Keep notes minimal and actionable
+
 ## Resources
 
 ### Primary References
