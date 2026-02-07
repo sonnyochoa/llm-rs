@@ -7,6 +7,7 @@ A tinygrad-inspired journey to understanding GPU programming and building a prod
 - Learn by implementing **Warp Challenges** (AoC-style GPU problems)
 - Each challenge: concept, problem, research pointers — then implement yourself
 - Track in [PROGRESS.md](PROGRESS.md): add to Current when starting, move to Completed when done
+- Challenges live in `challenges/` — when creating a new challenge, also add it to PROGRESS.md
 - Use "Programming Massively Parallel Processors" for theory, tinygrad/llama2.c for architecture patterns
 - Ultimate goal: understanding GPU parallel programming for AI inference
 - Keep notes minimal and actionable
