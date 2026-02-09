@@ -15,24 +15,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let data = vec![1.1, 2.2, 3.3, 4.4, 5.5, 6.6];
     let shape = vec![2, 3];
 
-    let my_tensor = Tensor::new(data, shape);
+    let mut my_tensor = Tensor::new(data, shape);
     println!("Shape: {:?}", my_tensor.shape);
     println!("Strides: {:?}", my_tensor.strides);
 
     // get assertion
-    assert_eq!(my_tensor.get(&[0, 0])?, 1.1);
-    assert_eq!(my_tensor.get(&[0, 2])?, 3.3);
-    assert_eq!(my_tensor.get(&[1, 1])?, 5.5);
-    println!("\n[passed] my_tensor.get tests");
+    println!("\n-- get tests --");
     println!("[-test-] my_tensor.get(&[0, 0]) -> 1.1");
     println!("[-test-] my_tensor.get(&[0, 2]) -> 3.3");
     println!("[-test-] my_tensor.get(&[1, 1]) -> 5.5");
+    assert_eq!(my_tensor.get(&[0, 0])?, 1.1);
+    assert_eq!(my_tensor.get(&[0, 2])?, 3.3);
+    assert_eq!(my_tensor.get(&[1, 1])?, 5.5);
+    println!("[passed] my_tensor.get tests");
 
     // set assertion
-    // tensor.set(&[1, 2], 99.0)?;
-    // assert_eq!(tensor.get(&[1, 2])?, 99.0);
-    my_tensor.set();
-    println!("\n[passed] my_tensor.set test");
-    println!("[-test-] my_tensor.get(&[1, 2]) -> 99.0");
+    println!("\n-- set test --");
+    my_tensor.set(&[1, 2], 99.0)?;
+    println!("[-test-] my_tensor.set(&[1, 2]) -> {:?}", my_tensor.get(&[1,2])?);
+    assert_eq!(my_tensor.get(&[1, 2])?, 99.0);
+    println!("[passed] my_tensor.set test");
     Ok(())
 }
