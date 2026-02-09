@@ -1,3 +1,14 @@
+use thiserror::Error;
+
+#[derive(Error, Debug, PartialEq)]
+pub enum TensorError {
+    #[error("Dimension mismatch: expected {expected} dimensions, got {actual}")]
+    DimensionMismatch { expected: usize, actual: usize },
+
+    #[error("Index out of bounds: index {index} is out of bounds for dimension {dim} with size {size}")]
+    IndexOutOfBounds { dim: usize, index: usize, size: usize },
+}
+
 // Tensor struct and core logic
 pub struct Tensor {
     pub data: Vec<f32>,
@@ -35,6 +46,21 @@ fn compute_strides(shape: &[usize]) -> Vec<usize> {
     strides
 }
 
+impl Tensor {
+    pub fn get(&self, indices: &[usize]) -> Result<f32, TensorError> {
+        // Compute the flat index
+        let mut flat_index = 0;
+        for (i, &idx) in indices.iter().enumerate() {
+            flat_index += idx * self.strides[i];
+        }
+
+        Ok(self.data[flat_index])
+    }
+
+    pub fn set(&self) {
+        println!("\nset test");
+    }
+}
 pub fn flatten_matrix<T, const N: usize>(matrix: &[[T; N]]) -> &[T] {
     matrix.as_flattened()
 }
