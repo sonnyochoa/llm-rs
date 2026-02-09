@@ -41,26 +41,29 @@ fn compute_strides(shape: &[usize]) -> Vec<usize> {
 }
 
 impl Tensor {
-    pub fn get(&self, indices: &[usize]) -> Result<f32, TensorError> {
+    pub fn get(&mut self, indices: &[usize]) -> Result<f32, TensorError> {
         // Compute the flat index
-        let mut flat_index = 0;
-        for (i, &idx) in indices.iter().enumerate() {
-            flat_index += idx * self.strides[i];
-        }
+        let flat_index = self.compute_flat_index(indices)?;
 
         Ok(self.data[flat_index])
     }
 
     pub fn set(&mut self, indices: &[usize], value: f32) -> Result<(), TensorError> {
         // Compute the flat index
+        let flat_index = self.compute_flat_index(indices)?;
+        self.data[flat_index] = value;
+        Ok(())
+    }
+
+    fn compute_flat_index(&mut self, indices: &[usize]) -> Result<usize, TensorError> {
         let mut flat_index = 0;
         for (i, &idx) in indices.iter().enumerate() {
             flat_index += idx * self.strides[i];
         }
-        self.data[flat_index] = value;
-        Ok(())
+        Ok(flat_index)
     }
 }
+
 pub fn flatten_matrix<T, const N: usize>(matrix: &[[T; N]]) -> &[T] {
     matrix.as_flattened()
 }
