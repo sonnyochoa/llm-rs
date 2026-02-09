@@ -33,16 +33,10 @@ fn compute_strides(shape: &[usize]) -> Vec<usize> {
     let mut current_stride = 1;
 
     // Work backwards from the last dimension to the first
-    println!("\n---- ---- ---- ----");
-    println!("// shape.len(): {:?}\n", shape.len());
     for i in (0..shape.len()).rev() {
-        println!("* i: {:?}", i);
         strides[i] = current_stride;
-        println!("-> strides[{i}]: {:?}", strides[i]);
         current_stride *= shape[i];
-        println!("<-> current_stride: {:?}", current_stride);
     }
-    println!("---- ---- ---- ----\n");
     strides
 }
 
@@ -57,8 +51,14 @@ impl Tensor {
         Ok(self.data[flat_index])
     }
 
-    pub fn set(&self) {
-        println!("\nset test");
+    pub fn set(&mut self, indices: &[usize], value: f32) -> Result<(), TensorError> {
+        // Compute the flat index
+        let mut flat_index = 0;
+        for (i, &idx) in indices.iter().enumerate() {
+            flat_index += idx * self.strides[i];
+        }
+        self.data[flat_index] = value;
+        Ok(())
     }
 }
 pub fn flatten_matrix<T, const N: usize>(matrix: &[[T; N]]) -> &[T] {
